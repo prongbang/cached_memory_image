@@ -1,5 +1,7 @@
 # cached_memory_image
 
+[![pub package](https://img.shields.io/pub/v/cached_memory_image.svg)](https://pub.dartlang.org/packages/cached_memory_image)
+
 A Flutter library to show images from the Base64, Uint8List and keep them in the cache directory.
 
 ## Features
