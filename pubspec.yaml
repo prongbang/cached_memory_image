@@ -1,6 +1,6 @@
 name: cached_memory_image
 description: A Flutter library to show images from the Base64, Uint8List and keep them in the cache directory.
-version: 1.0.0
+version: 1.1.0
 homepage: https://github.com/prongbang/screen_protector
 
 environment:
@@ -15,7 +15,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  flutter_lints: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

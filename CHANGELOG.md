@@ -1,3 +1,11 @@
+## 1.1.0
+
+* Add function isExists by key
+* Add function removeFile by key
+* Add function clearCache
+* Add function dispose
+* Remove invalid image cached when load image error
+
 ## 1.0.0
 
 * Cached image from Base64 and Uint8List

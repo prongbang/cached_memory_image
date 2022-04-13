@@ -1,5 +1,5 @@
-import 'dart:typed_data';
-
+import 'package:cached_memory_image/cached_image_base64_manager.dart';
+import 'package:cached_memory_image/cached_image_manager.dart';
 import 'package:cached_memory_image/cached_memory_image.dart';
 import 'package:cached_memory_image_example/image_data.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +16,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final CachedImageManager _cachedImageManager =
+      CachedImageBase64Manager.instance();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,9 +33,23 @@ class _MyAppState extends State<MyApp> {
                 itemCount: 2,
                 itemBuilder: (context, index) => Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: CachedMemoryImage(
-                    uniqueKey: 'app://image/1',
-                    base64: ImageData.base64,
+                  child: Column(
+                    children: [
+                      CachedMemoryImage(
+                        uniqueKey: 'app://image/1',
+                        errorWidget: const Text('Error'),
+                        base64: ImageData.base64,
+                      ),
+                      FutureBuilder(
+                        future: _cachedImageManager.isExists('app://image/1'),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text('Is Exists: ${snapshot.data}');
+                          }
+                          return const SizedBox();
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -42,9 +59,23 @@ class _MyAppState extends State<MyApp> {
                 itemCount: 2,
                 itemBuilder: (context, index) => Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: CachedMemoryImage(
-                    uniqueKey: 'app://image/2',
-                    bytes: Uint8List.fromList([1, 2, 3, 4, 5]),
+                  child: Column(
+                    children: [
+                      CachedMemoryImage(
+                        uniqueKey: 'app://image/4',
+                        errorWidget: const Text('Error'),
+                        bytes: ImageData.bytes,
+                      ),
+                      FutureBuilder(
+                        future: _cachedImageManager.isExists('app://image/4'),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text('Is Exists: ${snapshot.data}');
+                          }
+                          return const SizedBox();
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),

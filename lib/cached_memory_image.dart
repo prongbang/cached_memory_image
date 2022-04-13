@@ -92,9 +92,7 @@ class _CachedMemoryImageState extends State<CachedMemoryImage> {
             key: widget.key,
             scale: widget.scale,
             frameBuilder: widget.frameBuilder,
-            errorBuilder: widget.errorWidget != null
-                ? _errorBuilder
-                : widget.errorBuilder,
+            errorBuilder: _errorBuilder,
             semanticLabel: widget.semanticLabel,
             excludeFromSemantics: widget.excludeFromSemantics,
             width: widget.width,
@@ -120,8 +118,22 @@ class _CachedMemoryImageState extends State<CachedMemoryImage> {
   }
 
   Widget _errorBuilder(
-          BuildContext context, Object error, StackTrace? stackTrace) =>
-      widget.errorWidget ?? const SizedBox();
+      BuildContext context, Object error, StackTrace? stackTrace) {
+    // Remove invalid file from cache and display error widget.
+    return FutureBuilder<bool>(
+      future: _cachedImageManager?.removeFile(widget.uniqueKey),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (widget.errorWidget != null) {
+            return widget.errorWidget!;
+          } else if (widget.errorBuilder != null) {
+            return widget.errorBuilder!(context, error, stackTrace);
+          }
+        }
+        return const SizedBox();
+      },
+    );
+  }
 
   Future<File?> _cachedImage() async {
     if (widget.base64 != null) {
