@@ -9,10 +9,14 @@ A Flutter library to show images from the Base64, Uint8List and keep them in the
 #### Check file is exists
 
 ```dart
-await _cachedImageManager?.removeFile('app://image/1');
+final cachedImageManager = CachedImageBase64Manager.instance();
+
+await cachedImageManager?.removeFile('app://image/1');
 ```
 
 #### Cached Image from Base64
+
+- Widget
 
 ```dart
 CachedMemoryImage(
@@ -21,11 +25,31 @@ CachedMemoryImage(
 ),
 ```
 
+- Image Provider
+
+```dart
+CachedMemoryImageProvider(
+  'app://image/6',
+  base64: 'iVBORw0KGgoAAAANSUhEUgAAAk0AAAFwCAYAAACl9k...',
+)
+```
+
 #### Cached Image from Uint8List
+
+- Widget
 
 ```dart
 CachedMemoryImage(
   uniqueKey: 'app://image/1',
+  bytes: Uint8List.fromList([1,2,3,4,5]),
+)
+```
+
+- Image Provider
+
+```dart
+CachedMemoryImageProvider(
+  'app://image/5',
   bytes: Uint8List.fromList([1,2,3,4,5]),
 )
 ```
@@ -35,7 +59,7 @@ CachedMemoryImage(
 It is really easy to use! You should ensure that you add the `cached_memory_image` as a dependency in your flutter project.
 
 ```yaml
-cached_memory_image: "^1.1.0"
+cached_memory_image: "^1.2.0"
 ```
 
 ## Usage
