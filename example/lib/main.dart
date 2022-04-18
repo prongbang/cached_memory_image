@@ -1,7 +1,7 @@
 import 'package:cached_memory_image/cached_image_base64_manager.dart';
 import 'package:cached_memory_image/cached_image_manager.dart';
 import 'package:cached_memory_image/cached_memory_image.dart';
-import 'package:cached_memory_image/cached_memory_image_provider.dart';
+import 'package:cached_memory_image/provider/cached_memory_image_provider.dart';
 import 'package:cached_memory_image_example/image_data.dart';
 import 'package:flutter/material.dart';
 
