@@ -59,7 +59,7 @@ CachedMemoryImageProvider(
 It is really easy to use! You should ensure that you add the `cached_memory_image` as a dependency in your flutter project.
 
 ```yaml
-cached_memory_image: "^1.2.0"
+cached_memory_image: "^1.2.1"
 ```
 
 ## Usage
