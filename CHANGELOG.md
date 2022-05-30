@@ -1,3 +1,7 @@
+## 1.2.2
+
+* Added compatibility with Flutter 3.0
+
 ## 1.2.1
 
 * Update homepage url

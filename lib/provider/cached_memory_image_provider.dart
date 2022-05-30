@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui show Codec;
 
 import 'package:cached_memory_image/cached_image_base64_manager.dart';
+import 'package:cached_memory_image/cached_image_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -12,13 +13,16 @@ class CachedMemoryImageProvider
   final String? base64;
   final Uint8List? bytes;
   final double scale;
+  CachedImageManager? _cachedImageManager;
 
   CachedMemoryImageProvider(
     this.uniqueKey, {
     this.bytes,
     this.base64,
     this.scale = 1.0,
-  });
+  }) {
+    _cachedImageManager = CachedImageBase64Manager.instance();
+  }
 
   @override
   ImageStreamCompleter load(
@@ -40,21 +44,19 @@ class CachedMemoryImageProvider
   ) async {
     assert(key == this);
 
-    final cachedImageManager = CachedImageBase64Manager.instance();
-
     File? file;
 
     if (base64 != null) {
-      file = await cachedImageManager.cacheBase64(uniqueKey, base64!);
+      file = await _cachedImageManager?.cacheBase64(uniqueKey, base64!);
     } else if (bytes != null) {
-      file = await cachedImageManager.cacheBytes(uniqueKey, bytes!);
+      file = await _cachedImageManager?.cacheBytes(uniqueKey, bytes!);
     }
 
     final bytesImage = await file?.readAsBytes() ?? Uint8List.fromList([]);
 
     if (bytesImage.lengthInBytes == 0) {
       // The file may become available later.
-      PaintingBinding.instance?.imageCache?.evict(key);
+      PaintingBinding.instance.imageCache.evict(key);
       throw StateError('$uniqueKey is empty and cannot be loaded as an image.');
     }
 
