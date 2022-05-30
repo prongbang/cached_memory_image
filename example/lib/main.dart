@@ -27,122 +27,50 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Cached Memory Image'),
         ),
-        body: Row(
+        body: ListView(
           children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: 2,
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      CachedMemoryImage(
-                        uniqueKey: 'app://image/1',
-                        errorWidget: const Text('Error'),
-                        base64: ImageData.base64,
-                      ),
-                      FutureBuilder(
-                        future: _cachedImageManager.isExists('app://image/1'),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Text('Is Exists: ${snapshot.data}');
-                          }
-                          return const SizedBox();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+            Card(
+              child: CachedMemoryImage(
+                uniqueKey: 'app://image/1',
+                errorWidget: const Text('Error'),
+                base64: ImageData.base64,
+                placeholder: const CircularProgressIndicator(),
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 2,
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      CachedMemoryImage(
-                        uniqueKey: 'app://image/4',
-                        errorWidget: const Text('Error'),
+            Card(
+              child: CachedMemoryImage(
+                uniqueKey: 'app://image/4',
+                errorWidget: const Text('Error'),
+                bytes: ImageData.bytes,
+                placeholder: const CircularProgressIndicator(),
+              ),
+            ),
+            AspectRatio(
+              aspectRatio: 4 / 3,
+              child: Card(
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: CachedMemoryImageProvider(
+                        'app://image/5',
                         bytes: ImageData.bytes,
                       ),
-                      FutureBuilder(
-                        future: _cachedImageManager.isExists('app://image/4'),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Text('Is Exists: ${snapshot.data}');
-                          }
-                          return const SizedBox();
-                        },
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 2,
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 45,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: CachedMemoryImageProvider(
-                              'app://image/5',
-                              bytes: ImageData.bytes,
-                            ),
-                          ),
-                        ),
+            AspectRatio(
+              aspectRatio: 4 / 3,
+              child: Card(
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: CachedMemoryImageProvider(
+                        'app://image/6',
+                        base64: ImageData.base64,
                       ),
-                      FutureBuilder(
-                        future: _cachedImageManager.isExists('app://image/4'),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Text('Is Exists: ${snapshot.data}');
-                          }
-                          return const SizedBox();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 2,
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 45,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: CachedMemoryImageProvider(
-                              'app://image/6',
-                              base64: ImageData.base64,
-                            ),
-                          ),
-                        ),
-                      ),
-                      FutureBuilder(
-                        future: _cachedImageManager.isExists('app://image/4'),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Text('Is Exists: ${snapshot.data}');
-                          }
-                          return const SizedBox();
-                        },
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
