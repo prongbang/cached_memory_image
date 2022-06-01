@@ -1,9 +1,11 @@
 import 'package:cached_memory_image/cached_image_base64_manager.dart';
 import 'package:cached_memory_image/cached_image_manager.dart';
 import 'package:cached_memory_image/cached_memory_image.dart';
+import 'package:cached_memory_image/provider/cached_memory_image_placeholder_provider.dart';
 import 'package:cached_memory_image/provider/cached_memory_image_provider.dart';
 import 'package:cached_memory_image_example/image_data.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,49 +32,81 @@ class _MyAppState extends State<MyApp> {
         body: ListView(
           children: [
             Card(
-              child: CachedMemoryImage(
-                uniqueKey: 'app://image/1',
-                errorWidget: const Text('Error'),
-                base64: ImageData.base64,
-                placeholder: const CircularProgressIndicator(),
+              child: Column(
+                children: [
+                  const Text('With Base64'),
+                  CachedMemoryImage(
+                    uniqueKey: 'app://image/1',
+                    errorWidget: const Text('Error'),
+                    base64: ImageData.base64,
+                    placeholder: const CircularProgressIndicator(),
+                  ),
+                ],
               ),
             ),
             Card(
-              child: CachedMemoryImage(
-                uniqueKey: 'app://image/4',
-                errorWidget: const Text('Error'),
-                bytes: ImageData.bytes,
-                placeholder: const CircularProgressIndicator(),
+              child: Column(
+                children: [
+                  const Text('With Bytes'),
+                  CachedMemoryImage(
+                    uniqueKey: 'app://image/4',
+                    errorWidget: const Text('Error'),
+                    bytes: ImageData.bytes,
+                    placeholder: const CircularProgressIndicator(),
+                  ),
+                ],
               ),
             ),
-            AspectRatio(
-              aspectRatio: 4 / 3,
-              child: Card(
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: CachedMemoryImageProvider(
-                        'app://image/5',
-                        bytes: ImageData.bytes,
-                      ),
+            Card(
+              child: Column(
+                children: [
+                  const Text('With Bytes Provider'),
+                  AspectRatio(
+                    aspectRatio: 4 / 3,
+                    child: Stack(
+                      children: <Widget>[
+                        const Center(child: CircularProgressIndicator()),
+                        Center(
+                          child: FadeInImage(
+                            placeholder: CachedMemoryImagePlaceholderProvider(
+                              bytes: kTransparentImage,
+                            ),
+                            image: CachedMemoryImageProvider(
+                              'app://image/5',
+                              bytes: ImageData.bytes,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
+                ],
               ),
             ),
-            AspectRatio(
-              aspectRatio: 4 / 3,
-              child: Card(
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: CachedMemoryImageProvider(
-                        'app://image/6',
-                        base64: ImageData.base64,
-                      ),
+            Card(
+              child: Column(
+                children: [
+                  const Text('With Base64 Provider'),
+                  AspectRatio(
+                    aspectRatio: 4 / 3,
+                    child: Stack(
+                      children: <Widget>[
+                        const Center(child: CircularProgressIndicator()),
+                        Center(
+                          child: FadeInImage(
+                            placeholder: CachedMemoryImagePlaceholderProvider(
+                              bytes: kTransparentImage,
+                            ),
+                            image: CachedMemoryImageProvider(
+                              'app://image/6',
+                              base64: ImageData.base64,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
+                  )
+                ],
               ),
             ),
           ],
