@@ -3,16 +3,22 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cached_memory_image/cached_image_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class CachedImageBase64Manager implements CachedImageManager {
   final CacheManager _cacheManager;
-  final Base64Decoder _converter;
 
-  CachedImageBase64Manager(this._cacheManager, this._converter);
+  CachedImageBase64Manager(this._cacheManager);
 
   factory CachedImageBase64Manager.instance() =>
-      CachedImageBase64Manager(DefaultCacheManager(), const Base64Decoder());
+      CachedImageBase64Manager(DefaultCacheManager());
+
+  static Future<Uint8List> _convertBase64ToBytes(String base64) async {
+    const converter = Base64Decoder();
+    final imageBytes = converter.convert(base64);
+    return imageBytes;
+  }
 
   @override
   Future<File> cacheBase64(
@@ -26,7 +32,7 @@ class CachedImageBase64Manager implements CachedImageManager {
     final file = fileInfo?.file;
     if (file == null) {
       // Convert Base64 to Bytes of array
-      final imageBytes = _converter.convert(base64);
+      final imageBytes = await compute(_convertBase64ToBytes, base64);
 
       // Put the image file in the cache
       final files = await _cacheManager.putFile(

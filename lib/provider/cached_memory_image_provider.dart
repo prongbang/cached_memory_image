@@ -24,6 +24,9 @@ class CachedMemoryImageProvider
     _cachedImageManager = CachedImageBase64Manager.instance();
   }
 
+  static Future<Uint8List> readAsBytes(File? file) async =>
+      await file?.readAsBytes() ?? Uint8List.fromList([]);
+
   @override
   ImageStreamCompleter load(
     CachedMemoryImageProvider key,
@@ -52,11 +55,11 @@ class CachedMemoryImageProvider
       file = await _cachedImageManager?.cacheBytes(uniqueKey, bytes!);
     }
 
-    final bytesImage = await file?.readAsBytes() ?? Uint8List.fromList([]);
+    final bytesImage = await compute(readAsBytes, file);
 
     if (bytesImage.lengthInBytes == 0) {
       // The file may become available later.
-      PaintingBinding.instance.imageCache.evict(key);
+      PaintingBinding.instance?.imageCache?.evict(key);
       throw StateError('$uniqueKey is empty and cannot be loaded as an image.');
     }
 

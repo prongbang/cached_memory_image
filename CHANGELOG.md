@@ -1,3 +1,8 @@
+## 1.3.0
+
+* Added `CachedMemoryImagePlaceholderProvider`
+* Convert Base64 and Read File as Bytes on Background Thread
+
 ## 1.2.2
 
 * Added compatibility with Flutter 3.0
