@@ -1,4 +1,4 @@
-## 1.3.0
+## 1.3.1
 
 * Added `CachedMemoryImagePlaceholderProvider`
 * Convert Base64 and Read File as Bytes on Background Thread

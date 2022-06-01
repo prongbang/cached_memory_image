@@ -59,7 +59,7 @@ class CachedMemoryImageProvider
 
     if (bytesImage.lengthInBytes == 0) {
       // The file may become available later.
-      PaintingBinding.instance?.imageCache?.evict(key);
+      PaintingBinding.instance.imageCache.evict(key);
       throw StateError('$uniqueKey is empty and cannot be loaded as an image.');
     }
 
