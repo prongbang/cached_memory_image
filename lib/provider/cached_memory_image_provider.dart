@@ -6,6 +6,7 @@ import 'package:cached_memory_image/cached_image_base64_manager.dart';
 import 'package:cached_memory_image/cached_image_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CachedMemoryImageProvider
     extends ImageProvider<CachedMemoryImageProvider> {
@@ -30,7 +31,7 @@ class CachedMemoryImageProvider
   @override
   ImageStreamCompleter load(
     CachedMemoryImageProvider key,
-    DecoderCallback decode,
+      ImageDecoderCallback decode,
   ) =>
       MultiFrameImageStreamCompleter(
         codec: _loadAsync(key, decode),
@@ -43,7 +44,7 @@ class CachedMemoryImageProvider
 
   Future<ui.Codec> _loadAsync(
     CachedMemoryImageProvider key,
-    DecoderCallback decode,
+      ImageDecoderCallback decode,
   ) async {
     assert(key == this);
 
@@ -62,8 +63,8 @@ class CachedMemoryImageProvider
       PaintingBinding.instance.imageCache.evict(key);
       throw StateError('$uniqueKey is empty and cannot be loaded as an image.');
     }
-
-    return decode(bytesImage);
+    ImmutableBuffer buffer = await ImmutableBuffer.fromUint8List(bytes ?? bytesImage);
+    return decode(buffer);
   }
 
   @override

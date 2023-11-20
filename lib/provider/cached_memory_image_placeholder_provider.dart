@@ -3,6 +3,7 @@ import 'dart:ui' as ui show Codec;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CachedMemoryImagePlaceholderProvider
     extends ImageProvider<CachedMemoryImagePlaceholderProvider> {
@@ -17,7 +18,7 @@ class CachedMemoryImagePlaceholderProvider
   @override
   ImageStreamCompleter load(
     CachedMemoryImagePlaceholderProvider key,
-    DecoderCallback decode,
+      ImageDecoderCallback decode,
   ) =>
       MultiFrameImageStreamCompleter(
         codec: _loadAsync(key, decode),
@@ -35,9 +36,10 @@ class CachedMemoryImagePlaceholderProvider
 
   Future<ui.Codec> _loadAsync(
     CachedMemoryImagePlaceholderProvider key,
-    DecoderCallback decode,
+      ImageDecoderCallback decode,
   ) async {
     assert(key == this);
-    return decode(bytes);
+    ImmutableBuffer buffer = await ImmutableBuffer.fromUint8List(bytes);
+    return decode(buffer);
   }
 }
