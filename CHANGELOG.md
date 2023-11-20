@@ -1,3 +1,7 @@
+## 1.4.0
+
+* Migrate to supported dart 3
+
 ## 1.3.1
 
 * Added `CachedMemoryImagePlaceholderProvider`

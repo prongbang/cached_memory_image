@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui show Codec;
 
 import 'package:cached_memory_image/cached_image_base64_manager.dart';
@@ -29,9 +28,9 @@ class CachedMemoryImageProvider
       await file?.readAsBytes() ?? Uint8List.fromList([]);
 
   @override
-  ImageStreamCompleter load(
+  ImageStreamCompleter loadImage(
     CachedMemoryImageProvider key,
-      ImageDecoderCallback decode,
+    ImageDecoderCallback decode,
   ) =>
       MultiFrameImageStreamCompleter(
         codec: _loadAsync(key, decode),
@@ -44,7 +43,7 @@ class CachedMemoryImageProvider
 
   Future<ui.Codec> _loadAsync(
     CachedMemoryImageProvider key,
-      ImageDecoderCallback decode,
+    ImageDecoderCallback decode,
   ) async {
     assert(key == this);
 
@@ -63,7 +62,8 @@ class CachedMemoryImageProvider
       PaintingBinding.instance.imageCache.evict(key);
       throw StateError('$uniqueKey is empty and cannot be loaded as an image.');
     }
-    ImmutableBuffer buffer = await ImmutableBuffer.fromUint8List(bytes ?? bytesImage);
+    ImmutableBuffer buffer =
+        await ImmutableBuffer.fromUint8List(bytes ?? bytesImage);
     return decode(buffer);
   }
 
