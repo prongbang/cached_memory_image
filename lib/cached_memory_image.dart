@@ -1,9 +1,16 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cached_memory_image/cached_image.dart';
 import 'package:cached_memory_image/cached_image_base64_manager.dart';
 import 'package:cached_memory_image/cached_image_manager.dart';
 import 'package:flutter/material.dart';
+
+export 'provider/cached_memory_image_placeholder_provider.dart';
+export 'provider/cached_memory_image_provider.dart';
+export 'cached_image.dart';
+export 'cached_image_manager.dart';
+export 'cached_image_base64_manager.dart';
 
 class CachedMemoryImage extends StatefulWidget {
   /// Example
@@ -35,6 +42,7 @@ class CachedMemoryImage extends StatefulWidget {
   final double scale;
   final int? cacheWidth;
   final int? cacheHeight;
+  final CachedImage cached;
 
   final FilterQuality filterQuality;
 
@@ -65,6 +73,7 @@ class CachedMemoryImage extends StatefulWidget {
     this.filterQuality = FilterQuality.low,
     this.cacheWidth,
     this.cacheHeight,
+    this.cached = CachedImage.cacheAndRead,
   }) : super(key: key);
 
   @override
@@ -136,16 +145,20 @@ class _CachedMemoryImageState extends State<CachedMemoryImage> {
   }
 
   Future<File?> _cachedImage() async {
-    if (widget.base64 != null) {
-      return _cachedImageManager?.cacheBase64(
-        widget.uniqueKey,
-        widget.base64!,
-      );
-    } else if (widget.bytes != null) {
-      return _cachedImageManager?.cacheBytes(
-        widget.uniqueKey,
-        widget.bytes!,
-      );
+    if (widget.cached == CachedImage.cacheAndRead) {
+      if (widget.base64 != null) {
+        return _cachedImageManager?.cacheBase64(
+          widget.uniqueKey,
+          widget.base64!,
+        );
+      } else if (widget.bytes != null) {
+        return _cachedImageManager?.cacheBytes(
+          widget.uniqueKey,
+          widget.bytes!,
+        );
+      }
+    } else if (widget.cached == CachedImage.readOnly) {
+      return _cachedImageManager?.cacheFile(widget.uniqueKey);
     }
     return null;
   }

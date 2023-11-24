@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui show Codec;
 
+import 'package:cached_memory_image/cached_image.dart';
 import 'package:cached_memory_image/cached_image_base64_manager.dart';
 import 'package:cached_memory_image/cached_image_manager.dart';
 import 'package:flutter/foundation.dart';
@@ -13,6 +14,7 @@ class CachedMemoryImageProvider
   final String? base64;
   final Uint8List? bytes;
   final double scale;
+  final CachedImage cached;
   CachedImageManager? _cachedImageManager;
 
   CachedMemoryImageProvider(
@@ -20,6 +22,7 @@ class CachedMemoryImageProvider
     this.bytes,
     this.base64,
     this.scale = 1.0,
+    this.cached = CachedImage.cacheAndRead,
   }) {
     _cachedImageManager = CachedImageBase64Manager.instance();
   }
@@ -49,10 +52,14 @@ class CachedMemoryImageProvider
 
     File? file;
 
-    if (base64 != null) {
-      file = await _cachedImageManager?.cacheBase64(uniqueKey, base64!);
-    } else if (bytes != null) {
-      file = await _cachedImageManager?.cacheBytes(uniqueKey, bytes!);
+    if (cached == CachedImage.cacheAndRead) {
+      if (base64 != null) {
+        file = await _cachedImageManager?.cacheBase64(uniqueKey, base64!);
+      } else if (bytes != null) {
+        file = await _cachedImageManager?.cacheBytes(uniqueKey, bytes!);
+      }
+    } else if (cached == CachedImage.readOnly) {
+      file = await _cachedImageManager?.cacheFile(uniqueKey);
     }
 
     final bytesImage = await compute(readAsBytes, file);

@@ -86,4 +86,11 @@ class CachedImageBase64Manager implements CachedImageManager {
     await _cacheManager.removeFile(key);
     return true;
   }
+
+  @override
+  Future<File?> cacheFile(String key) async {
+    // Check if the image file is not in the cache
+    final fileInfo = await _cacheManager.getFileFromCache(key);
+    return fileInfo?.file;
+  }
 }

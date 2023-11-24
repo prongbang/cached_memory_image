@@ -6,6 +6,8 @@ abstract class CachedImageManager {
 
   Future<bool> removeFile(String key);
 
+  Future<File?> cacheFile(String key);
+
   Future<void> clearCache();
 
   Future<void> dispose();

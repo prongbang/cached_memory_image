@@ -1,0 +1,4 @@
+enum CachedImage {
+  cacheAndRead,
+  readOnly,
+}
