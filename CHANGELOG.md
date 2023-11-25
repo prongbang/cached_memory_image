@@ -1,3 +1,7 @@
+## 1.5.0
+
+* Added CachedImage parameter to supported cacheAndRead and readOnly
+
 ## 1.4.0
 
 * Migrate to supported dart 3

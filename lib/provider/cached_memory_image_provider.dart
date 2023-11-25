@@ -91,7 +91,7 @@ class CachedMemoryImageProvider
   }
 
   @override
-  int get hashCode => hashValues(uniqueKey, scale);
+  int get hashCode => Object.hash(uniqueKey, scale);
 
   @override
   String toString() =>

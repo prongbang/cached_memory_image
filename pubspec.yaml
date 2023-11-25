@@ -1,6 +1,6 @@
 name: cached_memory_image
 description: A Flutter library to show images from the Base64, Uint8List and keep them in the cache directory.
-version: 1.4.0
+version: 1.5.0
 homepage: https://github.com/prongbang/cached_memory_image
 
 environment:
